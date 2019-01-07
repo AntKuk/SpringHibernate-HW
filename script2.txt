@@ -1,0 +1,84 @@
+CREATE TABLE public.book
+(
+    book_id integer NOT NULL DEFAULT nextval('book_book_id_seq'::regclass),
+    title text COLLATE pg_catalog."default" NOT NULL,
+    cost integer NOT NULL,
+    stock text COLLATE pg_catalog."default" NOT NULL,
+    quantity integer NOT NULL,
+    CONSTRAINT book_pkey PRIMARY KEY (book_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.book
+    OWNER to postgres;
+
+
+CREATE TABLE public.customer
+(
+    cust_id integer NOT NULL DEFAULT nextval('customer_cust_id_seq'::regclass),
+    lastname text COLLATE pg_catalog."default" NOT NULL,
+    cust_district text COLLATE pg_catalog."default" NOT NULL,
+    discount integer NOT NULL,
+    CONSTRAINT customer_pkey PRIMARY KEY (cust_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.customer
+    OWNER to postgres;
+
+
+
+CREATE TABLE public.shop
+(
+    shop_id integer NOT NULL DEFAULT nextval('shop_shop_id_seq'::regclass),
+    shop_name text COLLATE pg_catalog."default" NOT NULL,
+    shop_district text COLLATE pg_catalog."default" NOT NULL,
+    commission integer NOT NULL,
+    CONSTRAINT shop_pkey PRIMARY KEY (shop_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.shop
+    OWNER to postgres;
+
+
+
+CREATE TABLE public.purchase
+(
+    order_id integer NOT NULL DEFAULT nextval('purchase_order_id_seq'::regclass),
+    date date NOT NULL,
+    shop_id integer NOT NULL,
+    cust_id integer NOT NULL,
+    book_id integer NOT NULL,
+    quantity integer NOT NULL,
+    total integer NOT NULL,
+    CONSTRAINT purchase_pkey PRIMARY KEY (order_id),
+    CONSTRAINT book_fk FOREIGN KEY (book_id)
+        REFERENCES public.book (book_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT cust_fk FOREIGN KEY (cust_id)
+        REFERENCES public.customer (cust_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT shop_fk FOREIGN KEY (shop_id)
+        REFERENCES public.shop (shop_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.purchase
+    OWNER to postgres;
