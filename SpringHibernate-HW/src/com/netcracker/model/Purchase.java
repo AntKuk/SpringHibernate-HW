@@ -72,11 +72,6 @@ public class Purchase {
     }
 
 
-
-
-
-
-
     public int getOrderId() {
         return orderId;
     }

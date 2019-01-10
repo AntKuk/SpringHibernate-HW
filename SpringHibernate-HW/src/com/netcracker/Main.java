@@ -21,12 +21,19 @@ public class Main {
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 
         IBookService bookService = (IBookService) context.getBean("bookService");
-        bookService.getBookBoughtInStockDistrict();
+        System.out.println(bookService.findAllBooks());
+        System.out.println(bookService.findBookById(2));
+        bookService.saveBook(new Book("NewTitle", 666, "NewDistrict", 3));
+        System.out.println(bookService.findAllBooks());
 
-        ICustomerService service = (ICustomerService) context.getBean("customerService");
-        List<Customer> customerList = service.findAllCustomers();
-        customerList.forEach(System.out::println);
-        System.out.println(service.countRows());
+
+        ICustomerService custService = (ICustomerService) context.getBean("customerService");
+        System.out.println(custService.countRows());
+
+        IPurchaseService purchaseService = (IPurchaseService) context.getBean("purchaseService");
+        purchaseService.getPurchaseDetailInfo();
+        purchaseService.savePurchase(new Purchase(new Date(2010,10,10),2,1,4,3,1000));
+        bookService.getBookBoughtInStockDistrict();
 
     }
 }
